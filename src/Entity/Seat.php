@@ -8,13 +8,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SeatRepository::class)]
+#[ORM\Table(name: 'seats')]
+#[ORM\UniqueConstraint(name: 'UNIQ_SEAT_FLIGHT_CODE', columns: ['flight_id', 'code'])]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Table(name: 'seats', uniqueConstraints: [
-    new ORM\UniqueConstraint(
-        name: 'UNIQ_SEAT_FLIGHT_CODE',
-        columns: ['flight_id', 'code']
-    )
-])]
 class Seat
 {
     #[ORM\Id]

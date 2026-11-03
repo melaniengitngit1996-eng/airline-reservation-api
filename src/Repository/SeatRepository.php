@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Seat;
+use App\Entity\Flight;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +15,15 @@ class SeatRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Seat::class);
+    }
+
+    public function findByFlight(Flight $flight): array
+    {
+        return $this->createQueryBuilder('seat')
+            ->where('seat.flight = :flight')
+            ->setParameter('flight', $flight)
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

@@ -18,6 +18,13 @@ class FlightRepository extends ServiceEntityRepository
         parent::__construct($registry, Flight::class);
     }
 
+    public function findAll(): array {
+        return $this->createQueryBuilder('flight')
+            ->orderBy('flight.departureTime')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findByRouteAndDepartureDate(
         Airport $originAirport,
         Airport $destinationAirport,

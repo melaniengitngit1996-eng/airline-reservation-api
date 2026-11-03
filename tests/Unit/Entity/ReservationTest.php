@@ -13,6 +13,12 @@ it('stores and returns the flight', function () {
         ->toBe($flight);
 });
 
+it('has null flight by default', function () {
+    $reservation = new Reservation();
+
+    expect($reservation->getFlight())->toBeNull();
+});
+
 it('has null timestamps by default', function () {
     $reservation = new Reservation();
 
