@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Airport;
 use App\Entity\Flight;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,28 +18,25 @@ class FlightRepository extends ServiceEntityRepository
         parent::__construct($registry, Flight::class);
     }
 
-//    /**
-//     * @return Flight[] Returns an array of Flight objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findByRouteAndDepartureDate(
+        Airport $originAirport,
+        Airport $destinationAirport,
+        \DateTimeImmutable $date
+    ): array {
+        $startOfDay = $date->setTime(0, 0, 0);
+        $endOfDay = $startOfDay->modify('+1 day');
 
-//    public function findOneBySomeField($value): ?Flight
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $this->createQueryBuilder('flight')
+            ->where('flight.originAirport = :originAirport')
+            ->andWhere('flight.destinationAirport = :destinationAirport')
+            ->andWhere('flight.departureTime >= :startOfDay')
+            ->andWhere('flight.departureTime < :endOfDay')
+            ->setParameter('originAirport', $originAirport)
+            ->setParameter('destinationAirport', $destinationAirport)
+            ->setParameter('startOfDay', $startOfDay)
+            ->setParameter('endOfDay', $endOfDay)
+            ->orderBy('flight.departureTime')
+            ->getQuery()
+            ->getResult();
+    }
 }

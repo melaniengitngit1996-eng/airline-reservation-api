@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FlightRepository::class)]
 #[ORM\Table(name: 'flights')]
+#[ORM\HasLifecycleCallbacks]
 class Flight
 {
     #[ORM\Id]
