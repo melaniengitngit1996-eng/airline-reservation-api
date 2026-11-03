@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 #[ORM\Table(name: 'reservations')]
+#[ORM\HasLifecycleCallbacks]
 class Reservation
 {
     #[ORM\Id]
