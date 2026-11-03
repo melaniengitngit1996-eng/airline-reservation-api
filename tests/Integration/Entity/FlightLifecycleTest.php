@@ -48,34 +48,57 @@ it('automatically sets timestamps when a flight is created', function () {
     $entityManager->flush();
 });
 
-// it('updates the updatedAt timestamp when a flight is modified', function () {
-//     $entityManager = static::getContainer()
-//         ->get(EntityManagerInterface::class);
+it('updates the updatedAt timestamp when a flight is modified', function () {
+    $entityManager = static::getContainer()
+        ->get(EntityManagerInterface::class);
 
-//     $airport = new Airport();
-//     $airport->setCode('TST');
-//     $airport->setName('Test Airport');
-//     $airport->setCity('Test City');
-//     $airport->setCountry('Philippines');
+    $originAirport = new Airport();
+    $originAirport->setCode('TST');
+    $originAirport->setName('Test Airport');
+    $originAirport->setCity('Test City');
+    $originAirport->setCountry('Philippines');
 
-//     $entityManager->persist($airport);
-//     $entityManager->flush();
+    $entityManager->persist($originAirport);
 
-//     $createdAt = $airport->getCreatedAt();
-//     $originalUpdatedAt = $airport->getUpdatedAt();
+    $destinationAirport = new Airport();
+    $destinationAirport->setCode('TSA');
+    $destinationAirport->setName('Test 2 Airport');
+    $destinationAirport->setCity('Test 2 City');
+    $destinationAirport->setCountry('Philippines');
 
-//     // Ensure timestamps will be different.
-//     sleep(1);
+    $entityManager->persist($destinationAirport);
+    $entityManager->flush();
 
-//     $airport->setName('Updated Test Airport');
+    $departureTime = new DateTimeImmutable('2026-11-01T06:00:00+08:00');
+    $arrivalTime = new DateTimeImmutable('2026-11-01T07:00:00+08:00');
 
-//     $entityManager->flush();
+    $flight = new Flight();
+    $flight->setFlightNumber('5J 744');
+    $flight->setDepartureTime($departureTime);
+    $flight->setArrivalTime($arrivalTime);
+    $flight->setOriginAirport($originAirport);
+    $flight->setDestinationAirport($destinationAirport);
 
-//     expect($airport->getCreatedAt())
-//         ->toEqual($createdAt)
-//         ->and($airport->getUpdatedAt()->getTimestamp())
-//         ->toBeGreaterThan($originalUpdatedAt->getTimestamp());
+    $entityManager->persist($flight);
+    $entityManager->flush();
 
-//     $entityManager->remove($airport);
-//     $entityManager->flush();
-// });
+    $createdAt = $flight->getCreatedAt();
+    $originalUpdatedAt = $flight->getUpdatedAt();
+
+    // Ensure timestamps will be different.
+    sleep(1);
+
+    $flight->setFlightNumber('TST 002');
+
+    $entityManager->flush();
+
+    expect($flight->getCreatedAt())
+        ->toEqual($createdAt)
+        ->and($flight->getUpdatedAt()->getTimestamp())
+        ->toBeGreaterThan($originalUpdatedAt->getTimestamp());
+
+    $entityManager->remove($flight);
+    $entityManager->remove($originAirport);
+    $entityManager->remove($destinationAirport);
+    $entityManager->flush();
+});
