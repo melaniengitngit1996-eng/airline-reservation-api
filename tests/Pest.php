@@ -1,6 +1,7 @@
 <?php
 
 use Tests\TestCase;
+use Tests\WebTestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +14,13 @@ use Tests\TestCase;
 |
 */
 
-pest()->extend(TestCase::class)->in('Feature', 'Integration');
+pest()->extend(TestCase::class)->in(
+    'Feature',
+    'Integration/Entity',
+    'Integration/Repository'
+);
+
+pest()->extend(Tests\WebTestCase::class)->in('Integration/Controller');
 
 /*
 |--------------------------------------------------------------------------
