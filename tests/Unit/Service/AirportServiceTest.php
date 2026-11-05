@@ -33,7 +33,8 @@ it('gets all airports', function () {
     $mock = $this->createMock(AirportRepository::class);
 
     $mock->expects($this->once())
-        ->method('findAll')
+        ->method('findByFilters')
+        ->with(null, null)
         ->willReturn([$airport]);
 
     $entityManager = $this->createMock(EntityManagerInterface::class);
@@ -44,6 +45,52 @@ it('gets all airports', function () {
 
     expect($airports)->toHaveCount(1);
     expect($airports[0])->toBeInstanceOf(Airport::class);
+});
+
+it('finds airports by code', function () {
+    $airport = new Airport();
+    $airport->setCode('MNL');
+    $airport->setName('Ninoy Aquino International Airport');
+
+    $repository = $this->createMock(AirportRepository::class);
+    $entityManager = $this->createMock(EntityManagerInterface::class);
+
+    $repository
+        ->expects($this->once())
+        ->method('findByFilters')
+        ->with('MNL', null)
+        ->willReturn([$airport]);
+
+    $service = new AirportService($repository, $entityManager);
+
+    $result = $service->findAll('MNL');
+
+    expect($result)
+        ->toHaveCount(1)
+        ->and($result[0])->toBe($airport);
+});
+
+it('finds airports by name', function () {
+    $airport = new Airport();
+    $airport->setCode('MNL');
+    $airport->setName('Ninoy Aquino International Airport');
+
+    $repository = $this->createMock(AirportRepository::class);
+    $entityManager = $this->createMock(EntityManagerInterface::class);
+
+    $repository
+        ->expects($this->once())
+        ->method('findByFilters')
+        ->with(null, 'Ninoy Aquino')
+        ->willReturn([$airport]);
+
+    $service = new AirportService($repository, $entityManager);
+
+    $result = $service->findAll(null, 'Ninoy Aquino');
+
+    expect($result)
+        ->toHaveCount(1)
+        ->and($result[0])->toBe($airport);
 });
 
 it('get by airport id', function () {

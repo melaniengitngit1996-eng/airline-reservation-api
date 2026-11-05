@@ -44,8 +44,8 @@ class FlightController {
             'flight_number' => $flight->getFlightNumber(),
             'departure_airport_id' => $flight->getDestinationAirport()->getId(),
             'arrival_airport_id' => $flight->getDestinationAirport()->getId(),
-            'departure_time' => $flight->getDepartureTime(),
-            'arrival_time' => $flight->getArrivalTime(),
+            'departure_time' => $flight->getDepartureTime()->format('Y-m-d H:i:s.u'),
+            'arrival_time' => $flight->getArrivalTime()->format('Y-m-d H:i:s.u'),
             'capacity' => $flight->getCapacity(),
         ], 201);
     }
@@ -61,8 +61,8 @@ class FlightController {
                 'flight_number' => $flight->getFlightNumber(),
                 'departure_airport_id' => $flight->getDestinationAirport()->getId(),
                 'arrival_airport_id' => $flight->getDestinationAirport()->getId(),
-                'departure_time' => $flight->getDepartureTime(),
-                'arrival_time' => $flight->getArrivalTime(),
+                'departure_time' => $flight->getDepartureTime()->format('Y-m-d H:i:s.u'),
+                'arrival_time' => $flight->getArrivalTime()->format('Y-m-d H:i:s.u'),
                 'capacity' => $flight->getCapacity(),
             ],
             $flights
@@ -83,8 +83,8 @@ class FlightController {
             'flight_number' => $flight->getFlightNumber(),
             'departure_airport_id' => $flight->getDestinationAirport()->getId(),
             'arrival_airport_id' => $flight->getDestinationAirport()->getId(),
-            'departure_time' => $flight->getDepartureTime(),
-            'arrival_time' => $flight->getArrivalTime(),
+            'departure_time' => $flight->getDepartureTime()->format('Y-m-d H:i:s.u'),
+            'arrival_time' => $flight->getArrivalTime()->format('Y-m-d H:i:s.u'),
             'capacity' => $flight->getCapacity(),
         ]);
     }
@@ -125,8 +125,8 @@ class FlightController {
             'flight_number' => $flight->getFlightNumber(),
             'departure_airport_id' => $flight->getDestinationAirport()->getId(),
             'arrival_airport_id' => $flight->getDestinationAirport()->getId(),
-            'departure_time' => $flight->getDepartureTime(),
-            'arrival_time' => $flight->getArrivalTime(),
+            'departure_time' => $flight->getDepartureTime()->format('Y-m-d H:i:s.u'),
+            'arrival_time' => $flight->getArrivalTime()->format('Y-m-d H:i:s.u'),
             'capacity' => $flight->getCapacity(),
         ]);
     }

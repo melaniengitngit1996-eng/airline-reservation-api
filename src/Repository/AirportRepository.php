@@ -15,4 +15,21 @@ class AirportRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Airport::class);
     }
+
+    public function findByFilters(?string $code = null, ?string $name = null): array
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        if ($code !== null) {
+            $qb->andWhere('a.code = :code')
+                ->setParameter('code', $code);
+        }
+
+        if ($name !== null) {
+            $qb->andWhere('a.name LIKE :name')
+                ->setParameter('name', '%' . $name . '%');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

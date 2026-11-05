@@ -45,9 +45,12 @@ class AirportController
     }
 
     #[Route('', methods: ['GET'])]
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $airports = $this->airportService->findAll();
+        $code = $request->query->get('code');
+        $name = $request->query->get('name');
+
+        $airports = $this->airportService->findAll($code, $name);
 
         return new JsonResponse(array_map(
             fn ($airport) => [

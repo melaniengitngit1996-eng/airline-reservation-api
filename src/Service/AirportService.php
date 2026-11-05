@@ -36,9 +36,9 @@ class AirportService implements AirportServiceInterface
         return $airport;
     }
 
-    public function findAll(): array
+    public function findAll(?string $code = null, ?string $name = null): array
     {
-        return $this->airportRepository->findAll();
+        return $this->airportRepository->findByFilters($code, $name);
     }
 
     public function find(int $id): ?Airport
