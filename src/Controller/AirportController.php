@@ -36,7 +36,7 @@ class AirportController
         }
 
         return new JsonResponse([
-            'id' => $airport->getId(),
+            'airport_id' => $airport->getId(),
             'code' => $airport->getCode(),
             'name' => $airport->getName(),
             'city' => $airport->getCity(),
@@ -51,7 +51,7 @@ class AirportController
 
         return new JsonResponse(array_map(
             fn ($airport) => [
-                'id' => $airport->getId(),
+                'airport_id' => $airport->getId(),
                 'code' => $airport->getCode(),
                 'name' => $airport->getName(),
                 'city' => $airport->getCity(),
@@ -71,7 +71,7 @@ class AirportController
         }
 
         return new JsonResponse([
-            'id' => $airport->getId(),
+            'airport_id' => $airport->getId(),
             'code' => $airport->getCode(),
             'name' => $airport->getName(),
             'city' => $airport->getCity(),
@@ -84,14 +84,10 @@ class AirportController
     {
         $data = json_decode($request->getContent(), true);
 
-        $requiredFields = ['code', 'name', 'city', 'country'];
-
-        foreach ($requiredFields as $field) {
-            if (empty($data[$field])) {
-                return new JsonResponse([
-                    'message' => "Required fields are missing."
-                ], 400);
-            }
+        if (empty($data)) {
+            return new JsonResponse([
+                'message' => 'At least one field is required.'
+            ], 400);
         }
 
         $airport = $this->airportService->update($id, $data);
@@ -103,7 +99,7 @@ class AirportController
         }
 
         return new JsonResponse([
-            'id' => $airport->getId(),
+            'airport_id' => $airport->getId(),
             'code' => $airport->getCode(),
             'name' => $airport->getName(),
             'city' => $airport->getCity(),
