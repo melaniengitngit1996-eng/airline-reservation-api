@@ -45,9 +45,17 @@ class PassengerService implements PassengerServiceInterface
             return null;
         }
 
-        $passenger->setFirstName($data['first_name']);
-        $passenger->setLastName($data['last_name']);
-        $passenger->setEmail($data['email']);
+        if (isset($data['first_name'])) {
+            $passenger->setFirstName($data['first_name']);
+        }
+
+        if (isset($data['last_name'])) {
+            $passenger->setLastName($data['last_name']);
+        }
+
+        if (isset($data['email'])) {
+            $passenger->setEmail($data['email']);
+        }
 
         $this->entityManager->flush();
 
