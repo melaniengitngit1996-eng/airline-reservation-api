@@ -46,4 +46,11 @@ class FlightRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByFlightNumber(string $flightNumber): ?Flight
+    {
+        return $this->findOneBy([
+            'flightNumber' => $flightNumber,
+        ]);
+    }
 }
