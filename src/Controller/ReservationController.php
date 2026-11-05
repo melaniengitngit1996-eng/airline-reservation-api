@@ -61,12 +61,12 @@ class ReservationController {
                 ],
 
                 'passengers' => array_map(
-                    fn ($passenger) => [
-                        'passenger_id' => $passenger->getId(),
-                        'first_name' => $passenger->getFirstName(),
-                        'last_name' => $passenger->getLastName(),
-                        'email' => $passenger->getEmail(),
-                    ], 
+                    fn ($reservationPassenger) => [
+                        'passenger_id' => $reservationPassenger->getPassenger()->getId(),
+                        'first_name' => $reservationPassenger->getPassenger()->getFirstName(),
+                        'last_name' => $reservationPassenger->getPassenger()->getLastName(),
+                        'email' => $reservationPassenger->getPassenger()->getEmail(),
+                    ],
                     $reservation->getReservationPassengers()->toArray()
                 ),
             ],
@@ -96,12 +96,12 @@ class ReservationController {
             ],
 
             'passengers' => array_map(
-                fn ($passenger) => [
-                    'passenger_id' => $passenger->getId(),
-                    'first_name' => $passenger->getFirstName(),
-                    'last_name' => $passenger->getLastName(),
-                    'email' => $passenger->getEmail(),
-                ], 
+                fn ($reservationPassenger) => [
+                    'passenger_id' => $reservationPassenger->getPassenger()->getId(),
+                    'first_name' => $reservationPassenger->getPassenger()->getFirstName(),
+                    'last_name' => $reservationPassenger->getPassenger()->getLastName(),
+                    'email' => $reservationPassenger->getPassenger()->getEmail(),
+                ],
                 $reservation->getReservationPassengers()->toArray()
             ),
         ]);
