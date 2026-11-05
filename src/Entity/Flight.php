@@ -19,6 +19,9 @@ class Flight
     private ?string $flightNumber = null;
 
     #[ORM\Column]
+    private ?int $capacity = null;
+
+    #[ORM\Column]
     private ?\DateTimeImmutable $departureTime = null;
 
     #[ORM\Column]
@@ -51,6 +54,18 @@ class Flight
     public function setFlightNumber(string $flightNumber): static
     {
         $this->flightNumber = $flightNumber;
+
+        return $this;
+    }
+
+    public function getCapacity(): ?int
+    {
+        return $this->capacity;
+    }
+
+    public function setCapacity(int $capacity): static
+    {
+        $this->capacity = $capacity;
 
         return $this;
     }

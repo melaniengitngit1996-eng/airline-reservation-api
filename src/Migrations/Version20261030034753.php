@@ -34,6 +34,7 @@ final class Version20261030034753 extends AbstractMigration
         $this->addSql('CREATE TABLE flights (
             id INT AUTO_INCREMENT NOT NULL,
             flight_number VARCHAR(20) NOT NULL,
+            capacity INT NOT NULL,
             departure_time DATETIME NOT NULL,
             arrival_time DATETIME NOT NULL,
             created_at DATETIME NOT NULL,

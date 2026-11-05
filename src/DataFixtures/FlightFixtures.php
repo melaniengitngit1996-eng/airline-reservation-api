@@ -36,6 +36,7 @@ class FlightFixtures extends Fixture implements FixtureGroupInterface, Dependent
         $flights = [
             [
                 'flightNumber' => '5J 561',
+                'capacity' => 10,
                 'origin' => $manila,
                 'destination' => $cebu,
                 'departure' => '2026-11-10T06:00:00+08:00',
@@ -43,6 +44,7 @@ class FlightFixtures extends Fixture implements FixtureGroupInterface, Dependent
             ],
             [
                 'flightNumber' => '5J 971',
+                'capacity' => 10,
                 'origin' => $manila,
                 'destination' => $davao,
                 'departure' => '2026-11-10T08:00:00+08:00',
@@ -50,6 +52,7 @@ class FlightFixtures extends Fixture implements FixtureGroupInterface, Dependent
             ],
             [
                 'flightNumber' => '5J 448',
+                'capacity' => 10,
                 'origin' => $cebu,
                 'destination' => $manila,
                 'departure' => '2026-11-10T11:00:00+08:00',
@@ -57,6 +60,7 @@ class FlightFixtures extends Fixture implements FixtureGroupInterface, Dependent
             ],
             [
                 'flightNumber' => '5J 464',
+                'capacity' => 10,
                 'origin' => $manila,
                 'destination' => $iloilo,
                 'departure' => '2026-11-11T09:00:00+08:00',
@@ -64,6 +68,7 @@ class FlightFixtures extends Fixture implements FixtureGroupInterface, Dependent
             ],
             [
                 'flightNumber' => '5J 335',
+                'capacity' => 10,
                 'origin' => $manila,
                 'destination' => $kalibo,
                 'departure' => '2026-11-11T13:00:00+08:00',
@@ -75,6 +80,7 @@ class FlightFixtures extends Fixture implements FixtureGroupInterface, Dependent
             $flight = new Flight();
 
             $flight->setFlightNumber($flightData['flightNumber']);
+            $flight->setCapacity($flightData['capacity']);
             $flight->setOriginAirport($flightData['origin']);
             $flight->setDestinationAirport($flightData['destination']);
             $flight->setDepartureTime(
