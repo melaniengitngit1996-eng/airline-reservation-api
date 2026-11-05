@@ -18,8 +18,6 @@ class FlightService implements FlightServiceInterface {
 
     public function create(array $data): ?Flight 
     {
-        $flight = new Flight();
-
         $originAirport = $this->airportRepository->find($data['departure_airport_id']);
         $destinationAirport = $this->airportRepository->find($data['arrival_airport_id']);
         $departureTime = new DateTimeImmutable($data['departure_time']);
