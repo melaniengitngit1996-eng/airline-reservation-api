@@ -26,28 +26,10 @@ class SeatRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-//    /**
-//     * @return Seat[] Returns an array of Seat objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Seat
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findAll(): array {
+        return $this->createQueryBuilder('seat')
+            ->orderBy('seat.code')
+            ->getQuery()
+            ->getResult();
+    }
 }
