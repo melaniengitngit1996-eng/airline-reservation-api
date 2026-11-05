@@ -3,6 +3,7 @@
 use App\Entity\Flight;
 use App\Entity\Seat;
 use App\Repository\FlightRepository;
+use App\Repository\ReservationPassengerRepository;
 use App\Repository\SeatRepository;
 use App\Service\SeatService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,6 +13,7 @@ it('creates a new seat in a flight', function () {
 
     $flightRepository = $this->createMock(FlightRepository::class);
     $seatRepository = $this->createMock(SeatRepository::class);
+    $reservationPassengerRepository = $this->createMock(ReservationPassengerRepository::class);
     $entityManager = $this->createMock(EntityManagerInterface::class);
 
     $flightRepository->expects($this->once())
@@ -25,7 +27,12 @@ it('creates a new seat in a flight', function () {
     $entityManager->expects($this->once())
         ->method('flush');
 
-    $service = new SeatService($flightRepository, $seatRepository, $entityManager);
+    $service = new SeatService(
+        $flightRepository, 
+        $seatRepository, 
+        $reservationPassengerRepository,
+        $entityManager
+    );
 
     $seat = $service->create(1, [
         'code' => 'ZZ'
@@ -36,6 +43,7 @@ it('creates a new seat in a flight', function () {
 
 it('gets all seats in a flight', function () {
     $flightRepository = $this->createMock(FlightRepository::class);
+    $reservationPassengerRepository = $this->createMock(ReservationPassengerRepository::class);
     $flight = new Flight();
     $flightRepository->expects($this->once())
         ->method('find')
@@ -50,8 +58,13 @@ it('gets all seats in a flight', function () {
 
     $entityManager = $this->createMock(EntityManagerInterface::class);
 
-    $service = new SeatService($flightRepository, $seatRepository, $entityManager);
-    
+    $service = new SeatService(
+        $flightRepository, 
+        $seatRepository, 
+        $reservationPassengerRepository,
+        $entityManager
+    );  
+      
     $seats = $service->findByFlight(1);
 
     expect($seats)->toHaveCount(1);
@@ -65,6 +78,7 @@ it('gets a seat in a flight', function () {
     $seatRepository = $this->createMock(SeatRepository::class);
     $flightRepository = $this->createMock(FlightRepository::class);
     $entityManager = $this->createMock(EntityManagerInterface::class);
+    $reservationPassengerRepository = $this->createMock(ReservationPassengerRepository::class);
 
     $flightRepository->expects($this->once())
         ->method('find')
@@ -82,6 +96,7 @@ it('gets a seat in a flight', function () {
     $service = new SeatService(
         $flightRepository,
         $seatRepository,
+        $reservationPassengerRepository,
         $entityManager
     );
 
@@ -105,6 +120,8 @@ it('updates a seat in a flight', function () {
         ->with(1)
         ->willReturn($seat);
 
+    $reservationPassengerRepository = $this->createMock(ReservationPassengerRepository::class);
+
     $entityManager = $this->createMock(EntityManagerInterface::class);
 
     $entityManager->expects($this->once())
@@ -113,7 +130,12 @@ it('updates a seat in a flight', function () {
     $entityManager->expects($this->once())
         ->method('flush');
 
-    $service = new SeatService($flightRepository ,$seatRepository, $entityManager);
+    $service = new SeatService(
+        $flightRepository,
+        $seatRepository,
+        $reservationPassengerRepository,
+        $entityManager
+    );
 
     $result = $service->update(1, 1, [
         'code' => 'A6',
@@ -139,13 +161,20 @@ it('deletes a seat in a flight', function () {
 
     $entityManager = $this->createMock(EntityManagerInterface::class);
 
+    $reservationPassengerRepository = $this->createMock(ReservationPassengerRepository::class);
+
     $entityManager->expects($this->once())
         ->method('remove');
 
     $entityManager->expects($this->once())
         ->method('flush');
 
-    $service = new SeatService($flightRepository ,$seatRepository, $entityManager);
+    $service = new SeatService(
+        $flightRepository,
+        $seatRepository,
+        $reservationPassengerRepository,
+        $entityManager
+    );
 
     $result = $service->delete(1, 1);
 

@@ -10,9 +10,11 @@ interface SeatServiceInterface {
 
     public function findByFlight(int $flightId): array;
 
-    public function find(int $flightId, int $id): ?Seat;
+    public function find(int $flightId, int $id);
 
     public function update(int $flightId, int $id, array $data): ?Seat;
 
     public function delete(int $flightId, int $id): bool;
+
+    public function isTaken(Seat $seat): bool;
 }

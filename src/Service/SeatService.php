@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Flight;
 use App\Entity\Seat;
 use App\Repository\FlightRepository;
+use App\Repository\ReservationPassengerRepository;
 use App\Repository\SeatRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -12,6 +13,7 @@ class SeatService implements SeatServiceInterface {
     public function __construct(
         private FlightRepository $flightRepository,
         private SeatRepository $seatRepository,
+        private ReservationPassengerRepository $reservationPassengerRepository,
         private EntityManagerInterface $entityManager
     ) {
     }
@@ -118,5 +120,10 @@ class SeatService implements SeatServiceInterface {
         $this->entityManager->flush();
 
         return true;
+    }
+
+    public function isTaken(Seat $seat): bool
+    {
+        return $this->reservationPassengerRepository->isTaken($seat);
     }
 }

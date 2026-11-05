@@ -34,7 +34,7 @@ class SeatController {
             'seat_id' => $seat->getId(),
             'flight_id' => $seat->getFlight()->getId(),
             'code' => $seat->getCode(),
-            'taken' => true,
+            'taken' => $this->seatService->isTaken($seat),
         ], 201);
     }
 
@@ -54,7 +54,7 @@ class SeatController {
                 'seat_id' => $seat->getId(),
                 'flight_id' => $seat->getFlight()->getId(),
                 'code' => $seat->getCode(),
-                'taken' => true,
+                'taken' => $this->seatService->isTaken($seat),
             ],
             $seats
         ));
@@ -73,7 +73,7 @@ class SeatController {
             'seat_id' => $seat->getId(),
             'flight_id' => $seat->getFlight()->getId(),
             'code' => $seat->getCode(),
-            'taken' => true,
+            'taken' => $this->seatService->isTaken($seat),
         ]);
     }
 
@@ -106,7 +106,7 @@ class SeatController {
             'seat_id' => $seat->getId(),
             'flight_id' => $seat->getFlight()->getId(),
             'code' => $seat->getCode(),
-            'taken' => true,
+            'taken' => $this->seatService->isTaken($seat),
         ]);
     }
 
