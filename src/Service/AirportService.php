@@ -54,10 +54,21 @@ class AirportService implements AirportServiceInterface
             return null;
         }
 
-        $airport->setCode($data['code']);
-        $airport->setName($data['name']);
-        $airport->setCity($data['city']);
-        $airport->setCountry($data['country']);
+        if (isset($data['code'])) {
+            $airport->setCode($data['code']);
+        }
+
+        if (isset($data['name'])) {
+            $airport->setName($data['name']);
+        }
+
+        if (isset($data['city'])) {
+            $airport->setCity($data['city']);
+        }
+
+        if (isset($data['country'])) {
+            $airport->setCountry($data['country']);
+        }
 
         $this->entityManager->flush();
 
