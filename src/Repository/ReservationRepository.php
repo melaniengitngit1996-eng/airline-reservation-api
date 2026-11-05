@@ -15,4 +15,17 @@ class ReservationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Reservation::class);
     }
+
+    public function findByFlightId(?int $flightId = null): array
+    {
+        if ($flightId === null) {
+            return $this->findAll();
+        }
+
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.flight = :flightId')
+            ->setParameter('flightId', $flightId)
+            ->getQuery()
+            ->getResult();
+    }
 }

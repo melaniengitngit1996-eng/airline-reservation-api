@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReservationPassengerRepository::class)]
 #[ORM\Table(name: 'reservation_passengers')]
+#[ORM\UniqueConstraint(name: 'UNIQ_RP_RESERVATION_PASSENGER', columns: ['reservation_id', 'passenger_id'])]
 #[ORM\HasLifecycleCallbacks]
 class ReservationPassenger
 {

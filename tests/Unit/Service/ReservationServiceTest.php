@@ -45,19 +45,49 @@ it('gets all reservations', function() {
     $reservationRepository = $this->createMock(ReservationRepository::class);
     $passengerRepository = $this->createMock(PassengerRepository::class);
     $flightRepository = $this->createStub(FlightRepository::class);
+
     $reservationRepository->expects($this->once())
-        ->method('findAll')
+        ->method('findByFlightId')
+        ->with(null)
         ->willReturn([$reservation]);
 
     $entityManager = $this->createMock(EntityManagerInterface::class);
 
     $service = new ReservationService(
-        $reservationRepository, 
-        $flightRepository, 
+        $reservationRepository,
+        $flightRepository,
         $passengerRepository,
         $entityManager
     );
+
     $reservations = $service->findAll();
+
+    expect($reservations)->toHaveCount(1);
+    expect($reservations[0])->toBeInstanceOf(Reservation::class);
+});
+
+it('gets reservations by flight id', function () {
+    $reservation = new Reservation();
+
+    $reservationRepository = $this->createMock(ReservationRepository::class);
+    $passengerRepository = $this->createMock(PassengerRepository::class);
+    $flightRepository = $this->createStub(FlightRepository::class);
+
+    $reservationRepository->expects($this->once())
+        ->method('findByFlightId')
+        ->with(1)
+        ->willReturn([$reservation]);
+
+    $entityManager = $this->createMock(EntityManagerInterface::class);
+
+    $service = new ReservationService(
+        $reservationRepository,
+        $flightRepository,
+        $passengerRepository,
+        $entityManager
+    );
+
+    $reservations = $service->findAll(1);
 
     expect($reservations)->toHaveCount(1);
     expect($reservations[0])->toBeInstanceOf(Reservation::class);

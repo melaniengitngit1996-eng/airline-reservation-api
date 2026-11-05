@@ -32,7 +32,7 @@ class ReservationPassengerController
                 $data
             );
         } catch (\DomainException $e) {
-            if ($e->getMessage() === 'Seat is already taken.') {
+            if ($e->getMessage() === 'Seat is already taken.' || $e->getMessage() === 'Passenger is already added to this reservation.') {
                 return new JsonResponse([
                     'message' => $e->getMessage()
                 ], 409);

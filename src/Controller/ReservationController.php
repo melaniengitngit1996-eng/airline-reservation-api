@@ -43,9 +43,13 @@ class ReservationController {
     }
 
     #[Route('', methods: ['GET'])]
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $reservations = $this->reservationService->findAll();
+        $flightId = $request->query->get('flight_id');
+
+        $reservations = $this->reservationService->findAll(
+            $flightId !== null ? (int) $flightId : null
+        );
 
         return new JsonResponse(array_map(
             fn ($reservation) => [

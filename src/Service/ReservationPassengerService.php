@@ -35,6 +35,16 @@ class ReservationPassengerService implements ReservationPassengerServiceInterfac
             throw new \DomainException('Passenger not found.');
         }
 
+        
+        $existing = $this->reservationPassengerService->findOneBy([
+            'reservation' => $reservation,
+            'passenger' => $passenger,
+        ]);
+
+        if ($existing !== null) {
+            throw new \DomainException('Passenger is already added to this reservation.');
+        }
+
         $seat = $this->seatService->findOneBy([
             'id' => $data['seat_id'],
             'flight' => $reservation->getFlight(),

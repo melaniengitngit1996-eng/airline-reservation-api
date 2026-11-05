@@ -34,10 +34,10 @@ class ReservationService implements ReservationServiceInterface {
         return $reservation;
     }
 
-    public function findAll(): array
+    public function findAll(?int $flightId = null): array
     {
-        return $this->reservationRepository->findAll();
-    } 
+        return $this->reservationRepository->findByFlightId($flightId);
+    }
 
     public function find(int $id): ?Reservation
     {
