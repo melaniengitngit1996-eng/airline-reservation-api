@@ -65,7 +65,7 @@ it('get by airport id', function () {
     expect($airport)->toBeInstanceOf(Airport::class);
 });
 
-it('updates a airport', function () {
+it('updates an airport', function () {
     $airport = new Airport();
     $airport->setCode('CDO');
     $airport->setName('Laguindingan Airport');
@@ -94,7 +94,7 @@ it('updates a airport', function () {
     expect($result->getCode())->toBe('CDL');
 });
 
-it('deletes a airport', function () {
+it('deletes an airport', function () {
     $airport = new Airport();
 
     $repository = $this->createStub(AirportRepository::class);
