@@ -23,6 +23,15 @@ class SeatService implements SeatServiceInterface {
             throw new \DomainException('Flight not found.');
         }
 
+        $existingSeatCode = $this->seatRepository->findOneBy([
+            'code' => $data['code'],
+            'flight' => $flight,
+        ]);
+
+        if ($existingSeatCode) {
+            throw new \DomainException('Seat code already exists in the flight.');
+        }
+
         $seat = new Seat();
 
         $seat->setCode($data['code']);
@@ -34,14 +43,29 @@ class SeatService implements SeatServiceInterface {
         return $seat;
     }
 
-    public function findAll(): array 
+    public function findByFlight(int $flightId): array 
     {
-        return $this->seatRepository->findAll();
+        $flight = $this->flightRepository->find($flightId);
+
+        if (!$flight) {
+            throw new \DomainException('Flight not found.');
+        }
+
+        return $this->seatRepository->findByFlight($flight);
     }
 
     public function find(int $flightId, int $id): ?Seat
     {
-        return $this->seatRepository->find($id);
+        $flight = $this->flightRepository->find($flightId);
+
+        if (!$flight) {
+            throw new \DomainException('Flight not found.');
+        }
+
+        return $this->seatRepository->findOneBy([
+            'id' => $id,
+            'flight' => $flight,
+        ]);
     }
 
     public function update(int $flightId, int $id, array $data): ?Seat
@@ -56,6 +80,15 @@ class SeatService implements SeatServiceInterface {
 
         if (!$seat) {
             throw new \DomainException('Seat not found.');
+        }
+
+        $existingSeatCode = $this->seatRepository->findOneBy([
+            'code' => $data['code'],
+            'flight' => $flight,
+        ]);
+
+        if ($existingSeatCode) {
+            throw new \DomainException('Seat code already exists in the flight.');
         }
 
         $seat->setCode($data['code']);

@@ -8,7 +8,7 @@ use App\Entity\Seat;
 interface SeatServiceInterface {
     public function create(int $flightId, array $data): Seat;
 
-    public function findAll(): array;
+    public function findByFlight(int $flightId): array;
 
     public function find(int $flightId, int $id): ?Seat;
 

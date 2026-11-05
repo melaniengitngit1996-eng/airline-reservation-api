@@ -35,39 +35,55 @@ it('creates a new seat in a flight', function () {
 });
 
 it('gets all seats in a flight', function () {
+    $flightRepository = $this->createMock(FlightRepository::class);
+    $flight = new Flight();
+    $flightRepository->expects($this->once())
+        ->method('find')
+        ->with(1)
+        ->willReturn($flight);
+        
     $seat = new Seat();
-
     $seatRepository = $this->createMock(SeatRepository::class);
-
     $seatRepository->expects($this->once())
-        ->method('findAll')
+        ->method('findByFlight')
         ->willReturn([$seat]);
 
     $entityManager = $this->createMock(EntityManagerInterface::class);
 
-    $flightRepository = $this->createMock(FlightRepository::class);
-
     $service = new SeatService($flightRepository, $seatRepository, $entityManager);
-
-    $seats = $service->findAll();
+    
+    $seats = $service->findByFlight(1);
 
     expect($seats)->toHaveCount(1);
     expect($seats[0])->toBeInstanceOf(Seat::class);
 });
 
 it('gets a seat in a flight', function () {
+    $flight = new Flight();
     $seat = new Seat();
 
     $seatRepository = $this->createMock(SeatRepository::class);
     $flightRepository = $this->createMock(FlightRepository::class);
     $entityManager = $this->createMock(EntityManagerInterface::class);
 
-    $seatRepository->expects($this->once())
+    $flightRepository->expects($this->once())
         ->method('find')
         ->with(1)
+        ->willReturn($flight);
+
+    $seatRepository->expects($this->once())
+        ->method('findOneBy')
+        ->with([
+            'id' => 1,
+            'flight' => $flight,
+        ])
         ->willReturn($seat);
 
-    $service = new SeatService($flightRepository, $seatRepository, $entityManager);
+    $service = new SeatService(
+        $flightRepository,
+        $seatRepository,
+        $entityManager
+    );
 
     $seat = $service->find(1, 1);
 
