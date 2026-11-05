@@ -38,13 +38,16 @@ class PassengerController
     }
 
     #[Route('', methods: ['GET'])]
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $passengers = $this->passengerService->findAll();
+        $firstName = $request->query->get('first_name');
+        $lastName = $request->query->get('last_name');
+
+        $passengers = $this->passengerService->findAll($firstName, $lastName);
 
         return new JsonResponse(array_map(
             fn ($passenger) => [
-                'id' => $passenger->getId(),
+                'passenger_id' => $passenger->getId(),
                 'first_name' => $passenger->getFirstName(),
                 'last_name' => $passenger->getLastName(),
                 'email' => $passenger->getEmail(),

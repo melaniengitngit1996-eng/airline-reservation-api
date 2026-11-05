@@ -27,9 +27,9 @@ class PassengerService implements PassengerServiceInterface
         return $passenger;
     }
 
-    public function findAll(): array
+    public function findAll(?string $firstName = null, ?string $lastName = null): array
     {
-        return $this->passengerRepository->findAll();
+        return $this->passengerRepository->findByFilters($firstName, $lastName);
     }
 
     public function find(int $id): ?Passenger

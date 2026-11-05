@@ -32,7 +32,8 @@ it('gets all passengers', function () {
     $mock = $this->createMock(PassengerRepository::class);
 
     $mock->expects($this->once())
-        ->method('findAll')
+        ->method('findByFilters')
+        ->with(null, null)
         ->willReturn([$passenger]);
 
     $entityManager = $this->createMock(EntityManagerInterface::class);
@@ -43,6 +44,70 @@ it('gets all passengers', function () {
 
     expect($passengers)->toHaveCount(1);
     expect($passengers[0])->toBeInstanceOf(Passenger::class);
+});
+
+it('gets passengers by first name', function () {
+    $passenger = new Passenger();
+    $passenger->setFirstName('Juan');
+
+    $mock = $this->createMock(PassengerRepository::class);
+
+    $mock->expects($this->once())
+        ->method('findByFilters')
+        ->with('Juan', null)
+        ->willReturn([$passenger]);
+
+    $entityManager = $this->createMock(EntityManagerInterface::class);
+
+    $service = new PassengerService($mock, $entityManager);
+
+    $passengers = $service->findAll('Juan');
+
+    expect($passengers)->toHaveCount(1);
+    expect($passengers[0])->toBe($passenger);
+});
+
+it('gets passengers by last name', function () {
+    $passenger = new Passenger();
+    $passenger->setLastName('Dela Cruz');
+
+    $mock = $this->createMock(PassengerRepository::class);
+
+    $mock->expects($this->once())
+        ->method('findByFilters')
+        ->with(null, 'Dela Cruz')
+        ->willReturn([$passenger]);
+
+    $entityManager = $this->createMock(EntityManagerInterface::class);
+
+    $service = new PassengerService($mock, $entityManager);
+
+    $passengers = $service->findAll(null, 'Dela Cruz');
+
+    expect($passengers)->toHaveCount(1);
+    expect($passengers[0])->toBe($passenger);
+});
+
+it('gets passengers by first name and last name', function () {
+    $passenger = new Passenger();
+    $passenger->setFirstName('Juan');
+    $passenger->setLastName('Dela Cruz');
+
+    $mock = $this->createMock(PassengerRepository::class);
+
+    $mock->expects($this->once())
+        ->method('findByFilters')
+        ->with('Juan', 'Dela Cruz')
+        ->willReturn([$passenger]);
+
+    $entityManager = $this->createMock(EntityManagerInterface::class);
+
+    $service = new PassengerService($mock, $entityManager);
+
+    $passengers = $service->findAll('Juan', 'Dela Cruz');
+
+    expect($passengers)->toHaveCount(1);
+    expect($passengers[0])->toBe($passenger);
 });
 
 it('get by passenger id', function () {
