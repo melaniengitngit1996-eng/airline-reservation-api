@@ -8,7 +8,7 @@ interface PassengerServiceInterface
 {
     public function create(array $data): Passenger;
 
-    public function findAll(): array;
+    public function findAll(?string $firstName = null, ?string $lastName = null): array;
 
     public function find(int $id): ?Passenger;
 

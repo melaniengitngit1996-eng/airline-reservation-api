@@ -8,7 +8,7 @@ interface ReservationServiceInterface
 {
     public function create(array $data): Reservation;
 
-    public function findAll(): array;
+    public function findAll(?int $flightId = null): array;
 
     public function find(int $id): ?Reservation;
 

@@ -180,3 +180,31 @@ it('deletes a seat in a flight', function () {
 
     expect($result)->toBeTrue();
 });
+
+it('checks if a seat is taken', function () {
+    $seat = new Seat();
+
+    $reservationPassengerRepository = $this->createMock(
+        ReservationPassengerRepository::class
+    );
+
+    $reservationPassengerRepository->expects($this->once())
+        ->method('isTaken')
+        ->with($seat)
+        ->willReturn(true);
+
+    $seatRepository = $this->createStub(SeatRepository::class);
+    $flightRepository = $this->createMock(FlightRepository::class);
+    $entityManager = $this->createMock(EntityManagerInterface::class);
+
+    $service = new SeatService(
+        $flightRepository,
+        $seatRepository,
+        $reservationPassengerRepository,
+        $entityManager
+    );
+
+    $result = $service->isTaken($seat);
+
+    expect($result)->toBeTrue();
+});
