@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Controller\Passenger;
+
+use App\Dto\Passengers\CreatePassengerDto;
+use App\Entity\Passenger;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\ObjectMapper\ObjectMapperInterface;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
+class CreatePassengerController {
+    private EntityManagerInterface $entityManager;
+    private ValidatorInterface $validator;
+    private ObjectMapperInterface $objectMapper;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ValidatorInterface $validator,
+        ObjectMapperInterface $objectMapper
+    ) {
+        $this->entityManager = $entityManager;
+        $this->validator = $validator;
+        $this->objectMapper = $objectMapper;
+    }
+
+    #[Route('/api/passengers', methods: ['POST'])]
+    public function __invoke(Request $request) {
+        $dto = new CreatePassengerDto($request);
+
+        $errors = $this->validator->validate($dto);
+        
+        if (count($errors) > 0) {
+            return new JsonResponse([
+                'message' => 'Validation failed.',
+                'errors' => (string) $errors,
+            ], 400);
+        }
+        
+        $passenger = $this->objectMapper->map($dto, Passenger::class);
+
+        $this->entityManager->persist($passenger);
+        $this->entityManager->flush();
+
+        return new JsonResponse([
+            'id' => $passenger->getId(),
+            'first_name' => $passenger->getFirstName(),
+            'last_name' => $passenger->getLastName(),
+            'email' => $passenger->getEmail()
+        ], 201);
+    }
+}

@@ -12,31 +12,6 @@ class PassengerController
 {
     public function __construct(private PassengerServiceInterface $passengerService) {}
 
-    #[Route('', methods: ['POST'])]
-    public function create(Request $request): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true);
-
-        $requiredFields = ['first_name', 'last_name', 'email'];
-
-        foreach ($requiredFields as $field) {
-            if (empty($data[$field])) {
-                return new JsonResponse([
-                    'message' => "Required fields are missing."
-                ], 400);
-            }
-        }
-    
-        $passenger = $this->passengerService->create($data);
-
-        return new JsonResponse([
-            'id' => $passenger->getId(),
-            'first_name' => $passenger->getFirstName(),
-            'last_name' => $passenger->getLastName(),
-            'email' => $passenger->getEmail(),
-        ], 201);
-    }
-
     #[Route('', methods: ['GET'])]
     public function index(Request $request): JsonResponse
     {
