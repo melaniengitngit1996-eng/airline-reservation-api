@@ -17,7 +17,10 @@
         "symfony/dotenv": "7.4.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.4.*",
+        "symfony/object-mapper": "7.4.*",
+        "symfony/property-access": "7.4.*",
         "symfony/runtime": "7.4.*",
+        "symfony/validator": "7.4.*",
         "symfony/yaml": "7.4.*"
     },
     "config": {
