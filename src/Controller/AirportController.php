@@ -12,7 +12,7 @@ class AirportController
 {
     public function __construct(private AirportServiceInterface $airportService) {}
 
-    #[Route('', methods: ['POST'])]
+    // #[Route('', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);

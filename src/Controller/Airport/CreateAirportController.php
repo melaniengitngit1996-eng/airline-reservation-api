@@ -1,0 +1,70 @@
+<?php
+
+namespace App\Controller\Airport;
+
+use App\Dto\Airport\CreateAirportDto;
+use App\Entity\Airport;
+use App\Repository\AirportRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\ObjectMapper\ObjectMapperInterface;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
+#[Route('/api/airports')]
+class CreateAirportController {
+    private EntityManagerInterface $entityManager;
+    private ValidatorInterface $validator;
+    private ObjectMapperInterface $objectMapper;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ValidatorInterface $validator,
+        ObjectMapperInterface $objectMapper
+    )
+    {
+        $this->entityManager = $entityManager;
+        $this->validator = $validator;
+        $this->objectMapper = $objectMapper;
+    }
+
+    #[Route('', methods: ['POST'])]
+    public function create(Request $request) {
+        $dto = new CreateAirportDto($request);
+
+        $errors = $this->validator->validate($dto);
+        
+        if (count($errors) > 0) {
+            return new JsonResponse([
+                'message' => 'Required fields are missing.',
+                'errors' => (string) $errors,
+            ], 400);
+        }
+
+        $airport = $this->objectMapper->map($dto, Airport::class);
+
+        $errors = $this->validator->validate($airport);
+
+        if (count($errors) > 0) {
+            if ($errors[0]->getMessage() == "This airport code already exists.") {
+                return new JsonResponse([
+                    'message' => 'Airport code already exists.', 
+                    'errors' => (string) $errors,
+                ],
+                409);
+            }
+        }
+
+        $this->entityManager->persist($airport);
+        $this->entityManager->flush();
+
+        return new JsonResponse([
+            'id' => $airport->getId(),
+            'code' => $airport->getCode(),
+            'name' => $airport->getName(),
+            'city' => $airport->getCity(),
+            'Country' => $airport->getCountry()
+        ], 201);
+    }
+}
