@@ -36,7 +36,26 @@ it('creates a passenger with blank fields (400)', function () {
     );
 
     expect($response['message'])
-        ->toBe('Validation failed.');
+        ->toBe('Required fields are missing.');
+});
+
+it('creates a passenger with missing fields (400)', function () {
+    $client = $this->createClient();
+    $client->jsonRequest('POST', '/api/passengers', [
+            'first_name' => 'Juan',
+            'last_name' => 'Dela Cruz',
+        ]);
+
+    expect($client->getResponse()->getStatusCode())
+        ->toBe(400);
+
+    $response = json_decode(
+        $client->getResponse()->getContent(),
+        true
+    );
+
+    expect($response['message'])
+        ->toBe('Required fields are missing.');
 });
 
 it('creates a passenger with empty fields (400)', function () {
@@ -52,7 +71,7 @@ it('creates a passenger with empty fields (400)', function () {
     );
 
     expect($response['message'])
-        ->toBe('Validation failed.');
+        ->toBe('Required fields are missing.');
 });
 
 it('creates a passenger with invalid email address (400)', function () {
@@ -72,5 +91,5 @@ it('creates a passenger with invalid email address (400)', function () {
     );
 
     expect($response['message'])
-        ->toBe('Validation failed.');
+        ->toBe('Invalid email address.');
 });

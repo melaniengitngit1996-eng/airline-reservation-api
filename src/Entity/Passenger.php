@@ -8,6 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Represents a passenger.
+ *
+ * Stores passenger information such as its first name, last name and email.
+ */
 #[ORM\Entity(repositoryClass: PassengerRepository::class)]
 #[ORM\Table(name: 'passengers')]
 #[ORM\HasLifecycleCallbacks]

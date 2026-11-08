@@ -18,7 +18,7 @@ class CreatePassengerDto {
     public string $last_name = '';
 
     #[Assert\NotBlank]
-    #[Assert\Email]
+    #[Assert\Email(message: 'Invalid email address.')]
     #[Map(target: 'email')]
     public string $email = '';
 

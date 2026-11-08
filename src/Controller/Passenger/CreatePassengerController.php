@@ -33,8 +33,14 @@ class CreatePassengerController {
         $errors = $this->validator->validate($dto);
         
         if (count($errors) > 0) {
+            $message = "Required fields are missing.";
+            
+            if ($errors[0]->getMessage() == 'Invalid email address.') {
+                $message = $errors[0]->getMessage();
+            }
+
             return new JsonResponse([
-                'message' => 'Validation failed.',
+                'message' => $message,
                 'errors' => (string) $errors,
             ], 400);
         }
