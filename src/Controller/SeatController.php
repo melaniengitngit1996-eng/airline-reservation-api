@@ -11,33 +11,6 @@ use Symfony\Component\Routing\Attribute\Route;
 class SeatController {
     public function __construct(private SeatServiceInterface $seatService) {}
 
-    #[Route('', methods: ['POST'])]
-    public function create(int $flightId, Request $request): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true);
-
-        if (empty($data['code'])) {
-            return new JsonResponse([
-                'message' => 'Required fields are missing.'
-            ], 400);
-        }
-
-        try {
-            $seat = $this->seatService->create($flightId, $data);
-        } catch (\DomainException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage()
-            ], 404);
-        }
-
-        return new JsonResponse([
-            'seat_id' => $seat->getId(),
-            'flight_id' => $seat->getFlight()->getId(),
-            'code' => $seat->getCode(),
-            'taken' => $this->seatService->isTaken($seat),
-        ], 201);
-    }
-
     #[Route('', methods: ['GET'])]
     public function index(int $flightId): JsonResponse
     {

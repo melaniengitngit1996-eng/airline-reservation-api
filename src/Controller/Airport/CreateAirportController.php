@@ -30,7 +30,7 @@ class CreateAirportController {
     }
 
     #[Route('', methods: ['POST'])]
-    public function create(Request $request) {
+    public function __invoke(Request $request) {
         $dto = new CreateAirportDto($request);
 
         $errors = $this->validator->validate($dto);
