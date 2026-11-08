@@ -12,12 +12,34 @@ use Symfony\Component\ObjectMapper\ObjectMapperInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Controller for creating a new airport.
+ */
 #[Route('/api/airports')]
-class CreateAirportController {
+class CreateAirportController
+{
+    /**
+     * Entity manager for persisting airport entities.
+     */
     private EntityManagerInterface $entityManager;
+
+    /**
+     * Validator for validating airport DTOs and entities.
+     */
     private ValidatorInterface $validator;
+
+    /**
+     * Object mapper for mapping the airport DTO to the Airport entity.
+     */
     private ObjectMapperInterface $objectMapper;
 
+    /**
+     * Creates a new CreateAirportController instance.
+     *
+     * @param EntityManagerInterface $entityManager Entity manager for database operations.
+     * @param ValidatorInterface $validator Validator for validating the DTO and entity.
+     * @param ObjectMapperInterface $objectMapper Object mapper for DTO-to-entity mapping.
+     */
     public function __construct(
         EntityManagerInterface $entityManager,
         ValidatorInterface $validator,
@@ -29,8 +51,16 @@ class CreateAirportController {
         $this->objectMapper = $objectMapper;
     }
 
+    /**
+     * Creates a new airport.
+     *
+     * @param Request $request The HTTP request containing the airport data.
+     *
+     * @return JsonResponse The created airport or a validation error response.
+     */
     #[Route('', methods: ['POST'])]
-    public function __invoke(Request $request) {
+    public function __invoke(Request $request)
+    {
         $dto = new CreateAirportDto($request);
 
         $errors = $this->validator->validate($dto);

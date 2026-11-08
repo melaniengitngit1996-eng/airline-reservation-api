@@ -12,13 +12,40 @@ use Symfony\Component\ObjectMapper\ObjectMapperInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Controller for creating seats associated with a specific flight.
+ */
 #[Route('/api/flights/{flightId}/seats')]
-class CreateSeatController {
+class CreateSeatController
+{
+    /**
+     * Repository for retrieving flight records.
+     */
     private FlightRepository $flightRepository;
+
+    /**
+     * Entity manager for persisting the seat entity.
+     */
     private EntityManagerInterface $entityManager;
+
+    /**
+     * Validator for validating DTOs and entities.
+     */
     private ValidatorInterface $validator;
+
+    /**
+     * Object mapper for mapping DTOs to entities.
+     */
     private ObjectMapperInterface $objectMapper;
 
+    /**
+     * Creates a new CreateSeatController instance.
+     *
+     * @param FlightRepository $flightRepository Repository for retrieving flights.
+     * @param EntityManagerInterface $entityManager Entity manager for database operations.
+     * @param ValidatorInterface $validator Validator for DTO and entity validation.
+     * @param ObjectMapperInterface $objectMapper Object mapper for DTO-to-entity mapping.
+     */
     public function __construct(
         FlightRepository $flightRepository,
         EntityManagerInterface $entityManager,
@@ -32,6 +59,14 @@ class CreateSeatController {
         $this->objectMapper = $objectMapper;
     }
 
+    /**
+     * Creates a new seat for the specified flight.
+     *
+     * @param int|string $flightId The ID of the flight associated with the seat.
+     * @param Request $request The HTTP request containing the seat data.
+     *
+     * @return JsonResponse The created seat or an error response.
+     */
     #[Route('', methods: ['POST'])]
     public function __invoke($flightId, Request $request)
     {
