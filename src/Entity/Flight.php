@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\FlightRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: FlightRepository::class)]
 #[ORM\Table(name: 'flights')]
+#[UniqueEntity(fields: ['flightNumber'], message: 'Flight number already exists.')]
 #[ORM\HasLifecycleCallbacks]
 class Flight
 {

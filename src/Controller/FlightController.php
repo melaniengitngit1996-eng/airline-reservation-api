@@ -11,45 +11,6 @@ use Symfony\Component\Routing\Attribute\Route;
 class FlightController {
     public function __construct(private FlightServiceInterface $flightService) {}
 
-    #[Route('', methods: ['POST'])]
-    public function create(Request $request): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-
-        $requiredFields = ['flight_number', 'departure_airport_id', 'arrival_airport_id', 'departure_time', 'arrival_time', 'capacity'];
-
-        foreach ($requiredFields as $field) {
-            if (empty($data[$field])) {
-                return new JsonResponse([
-                    'message' => 'Required fields are missing.'
-                ], 400);
-            }
-        }
-
-        try {
-            $flight = $this->flightService->create($data);
-
-            if (!$flight) {
-                return new JsonResponse([
-                    'message' => 'Airport not found.'
-                ], 404);
-            }
-        } catch (\DomainException $e) {
-            return new JsonResponse([
-                'message' => $e->getMessage()
-            ], 409);
-        }
-
-        return new JsonResponse([
-            'flight_id' => $flight->getId(),
-            'flight_number' => $flight->getFlightNumber(),
-            'departure_airport_id' => $flight->getDestinationAirport()->getId(),
-            'arrival_airport_id' => $flight->getDestinationAirport()->getId(),
-            'departure_time' => $flight->getDepartureTime()->format('Y-m-d H:i:s.u'),
-            'arrival_time' => $flight->getArrivalTime()->format('Y-m-d H:i:s.u'),
-            'capacity' => $flight->getCapacity(),
-        ], 201);
-    }
-
     #[Route('', methods: ['GET'])]
     public function index(): JsonResponse
     {
