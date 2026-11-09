@@ -104,7 +104,6 @@ class Seat
      *
      * @return string|null The seat code.
      */
-
     public function getCode(): ?string
     {
         return $this->code;

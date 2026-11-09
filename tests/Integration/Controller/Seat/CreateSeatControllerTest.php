@@ -1,5 +1,14 @@
 <?php
 
+it('has create seat API endpoint', function () {
+    $client = $this->createClient();
+
+    $client->jsonRequest('POST', '/api/flights/1/seats', []);
+
+    expect($client->getResponse()->getStatusCode())
+        ->not->toBe(404);
+});
+
 it('creates seat successfully (201)', function () {
     $client = $this->createClient();
 
